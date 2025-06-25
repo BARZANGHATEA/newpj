@@ -10,6 +10,10 @@ require_role('doctor');
 
 $doctor_id = $_SESSION['user_id'];
 
+// Doctor basic info and profile
+$doctor_data = get_row("SELECT * FROM users WHERE id = ?", [$doctor_id]);
+$doctor_profile = get_row("SELECT * FROM doctor_profiles WHERE doctor_id = ?", [$doctor_id]);
+
 $patients = get_rows("
     SELECT u.id, u.name, u.phone, u.national_id, u.avatar
     FROM doctor_patient dp
@@ -32,6 +36,7 @@ foreach ($patients as $p) {
     <meta charset="UTF-8">
     <title>بیماران پزشک</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
     <style>
         .card {
             border: none;
@@ -72,6 +77,24 @@ foreach ($patients as $p) {
             </div>
         </div>
     </nav>
+
+    <div class="hero-section text-center mb-5">
+        <img src="<?= htmlspecialchars($doctor_data['avatar'] ?? '../assets/images/default_avatar.png') ?>" class="rounded-circle mb-3" style="width: 120px; height: 120px; object-fit: cover;" alt="پروفایل پزشک">
+        <h1 class="h3 mb-1">
+            <?php
+                if ($doctor_profile && ($doctor_profile['first_name'] || $doctor_profile['last_name'])) {
+                    echo htmlspecialchars(trim(($doctor_profile['first_name'] ?? '') . ' ' . ($doctor_profile['last_name'] ?? '')));
+                } else {
+                    echo htmlspecialchars($doctor_data['name']);
+                }
+            ?>
+        </h1>
+        <p class="mb-0">
+            <?= htmlspecialchars($doctor_profile['specialty'] ?? 'پزشک') ?>
+            <?php if (!empty($doctor_data['medical_system_code'])): ?> - کد نظام پزشکی: <?= htmlspecialchars($doctor_data['medical_system_code']) ?><?php endif; ?>
+        </p>
+    </div>
+
     <div class="container">
         <h2 class="mb-4 text-center">بیماران شما</h2>
         <div class="row g-4">
