@@ -1,5 +1,16 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Installation
+
+Run the following command to install project dependencies:
+
+```bash
+npm install --legacy-peer-deps
+```
+
+This flag resolves potential peer dependency conflicts during installation.
+If installation still fails, try cleaning `node_modules` and updating the conflicted packages manually.
+
 ## Getting Started
 
 First, run the development server:
@@ -18,7 +29,25 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
+## Linting
+
+Run the project linter to check code style and catch common issues:
+
+```bash
+npm run lint
+```
+
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+
+## Serving PHP Pages
+
+If you need to test the PHP portions of this project, start a local PHP server from the project root:
+
+```bash
+php -S localhost:8000
+```
+
+Navigate to <http://localhost:8000> in your browser to access the PHP pages such as `index.php`.
 
 ## Learn More
 
