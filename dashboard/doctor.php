@@ -29,8 +29,6 @@ foreach ($patients as $p) {
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <a href="logout.php" class="btn btn-outline-danger">خروج</a>
-
     <meta charset="UTF-8">
     <title>بیماران پزشک</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css">
@@ -54,6 +52,26 @@ foreach ($patients as $p) {
     </style>
 </head>
 <body class="bg-light p-4">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="#">پنل پزشک</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <span class="nav-link">خوش آمدید، <?php echo htmlspecialchars($_SESSION['name']); ?></span>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a href="doctor_profile.php" class="nav-link">پروفایل</a></li>
+                    <li class="nav-item"><a href="doctor.php" class="nav-link">لیست بیماران</a></li>
+                    <li class="nav-item"><a href="../includes/auth_handler.php?action=logout" class="nav-link">خروج</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
     <div class="container">
         <h2 class="mb-4 text-center">بیماران شما</h2>
         <div class="row g-4">
@@ -105,6 +123,17 @@ foreach ($patients as $p) {
                         <?php else: ?>
                           <p class="text-muted">علائمی ثبت نشده است.</p>
                         <?php endif; ?>
+
+                        <hr>
+                        <form action="doctor_handler.php" method="POST">
+                            <input type="hidden" name="action" value="add_prescription">
+                            <input type="hidden" name="patient_id" value="<?= $p['id'] ?>">
+                            <div class="mb-3">
+                                <label class="form-label">نسخه</label>
+                                <textarea name="prescription" class="form-control" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-success">ثبت نسخه</button>
+                        </form>
                       </div>
                     </div>
                   </div>
