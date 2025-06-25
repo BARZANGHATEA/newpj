@@ -120,3 +120,26 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
 }
+
+/* Symptom Circles */
+.symptom-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+    font-size: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.symptom-circle small {
+    font-size: 0.75rem;
+}
+
+.bg-pink { background-color: #ffb6c1; }
+.bg-blue { background-color: #87ceeb; }
+.bg-green { background-color: #90ee90; }
+.bg-yellow { background-color: #ffff99; }

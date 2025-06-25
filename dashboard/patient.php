@@ -31,7 +31,6 @@ $weekly_symptoms = get_rows(
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css">
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/main.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </head>
@@ -150,12 +149,29 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>
             </div>
 
-            <!-- Health Data Chart -->
+            <!-- Health Data Overview -->
             <div class="col-md-6 mb-4">
                 <div class="card shadow-sm">
                     <div class="card-body">
-                        <h5 class="card-title mb-4">نمودار دمای بدن (۷ روز گذشته)</h5>
-                        <canvas id="temperatureChart"></canvas>
+                        <h5 class="card-title mb-4">آخرین وضعیت علائم</h5>
+                        <div class="d-flex justify-content-around text-center">
+                            <div class="symptom-circle bg-pink">
+                                <div class="fw-bold"><?php echo htmlspecialchars($latest_symptoms['temperature'] ?? '-'); ?></div>
+                                <small>دمای بدن</small>
+                            </div>
+                            <div class="symptom-circle bg-blue">
+                                <div class="fw-bold"><?php echo htmlspecialchars($latest_symptoms['blood_pressure'] ?? '-'); ?></div>
+                                <small>فشار خون</small>
+                            </div>
+                            <div class="symptom-circle bg-green">
+                                <div class="fw-bold"><?php echo htmlspecialchars($latest_symptoms['blood_sugar'] ?? '-'); ?></div>
+                                <small>قند خون</small>
+                            </div>
+                            <div class="symptom-circle bg-yellow">
+                                <div class="fw-bold"><?php echo htmlspecialchars($latest_symptoms['energy_level'] ?? '-'); ?></div>
+                                <small>سطح انرژی</small>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -220,43 +236,6 @@ document.addEventListener("DOMContentLoaded", function () {
             })
         })()
 
-        // Temperature Chart
-        const ctx = document.getElementById('temperatureChart').getContext('2d');
-        const temperatureData = <?php 
-            $dates = [];
-            $temperatures = [];
-            foreach ($weekly_symptoms as $symptom) {
-                $dates[] = date('m/d', strtotime($symptom['recorded_at']));
-                $temperatures[] = $symptom['temperature'];
-            }
-            echo json_encode([
-                'dates' => $dates,
-                'temperatures' => $temperatures
-            ]);
-        ?>;
-
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: temperatureData.dates,
-                datasets: [{
-                    label: 'دمای بدن',
-                    data: temperatureData.temperatures,
-                    borderColor: '#0396FF',
-                    tension: 0.1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: false,
-                        min: 35,
-                        max: 42
-                    }
-                }
-            }
-        });
     </script>
 </body>
 </html>
