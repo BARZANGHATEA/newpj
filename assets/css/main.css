@@ -1,0 +1,122 @@
+/* RTL and Persian Font Support */
+body {
+    font-family: 'Vazir', system-ui, -apple-system, sans-serif;
+    text-align: right;
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, #0396FF 0%, #ABDCFF 100%);
+    color: white;
+    padding: 100px 0;
+}
+
+/* Card Customization */
+.card {
+    border: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* Custom Button Styles */
+.btn-primary {
+    background: #0396FF;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 5px;
+}
+
+.btn-primary:hover {
+    background: #0384e5;
+}
+
+/* Navigation */
+.navbar {
+    padding: 15px 0;
+}
+
+.navbar-brand {
+    font-weight: bold;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    animation: fadeIn 1s ease-out;
+}
+
+/* RTL Specific Adjustments */
+.navbar-nav {
+    padding-right: 0;
+}
+
+.me-auto {
+    margin-right: 0 !important;
+    margin-left: auto !important;
+}
+
+.ms-auto {
+    margin-left: 0 !important;
+    margin-right: auto !important;
+}
+
+/* Form Controls RTL */
+.form-control {
+    text-align: right;
+}
+
+/* Custom Spacing for RTL */
+.me-2 {
+    margin-left: 0.5rem !important;
+    margin-right: 0 !important;
+}
+
+.ms-2 {
+    margin-right: 0.5rem !important;
+    margin-left: 0 !important;
+}
+
+/* Persian Number Support */
+@font-feature-values 'Vazir' {
+    @numeric-figure-values {
+        text-figure: proportional-nums;
+    }
+}
+
+/* Custom Form Styling */
+.form-control:focus {
+    border-color: #0396FF;
+    box-shadow: 0 0 0 0.2rem rgba(3, 150, 255, 0.25);
+}
+
+/* Custom Alert Styling */
+.alert {
+    border: none;
+    border-radius: 8px;
+}
+
+/* Dashboard Cards */
+.dashboard-card {
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    background: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Chart Container */
+.chart-container {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
