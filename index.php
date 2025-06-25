@@ -1,3 +1,9 @@
+<?php
+require_once 'includes/database.php';
+$latest_articles = get_rows(
+    "SELECT id, title, content, image_url, created_at FROM articles ORDER BY created_at DESC LIMIT 3"
+);
+?>
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -26,6 +32,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#services">خدمات</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="articles/articles.php">مقالات سلامت</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#contact">تماس با ما</a>
@@ -58,6 +67,44 @@
                 <div class="col-md-6">
                     <p>با استفاده از فناوری‌های پیشرفته، ما ارتباط بین بیماران و پزشکان را تسهیل می‌کنیم.</p>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Latest Articles Section -->
+    <section id="latest-articles" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-4">آخرین مقالات</h2>
+            <div class="row g-4">
+                <?php foreach ($latest_articles as $article): ?>
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <?php if ($article['image_url']): ?>
+                        <img src="<?php echo htmlspecialchars($article['image_url']); ?>"
+                             class="card-img-top"
+                             alt="<?php echo htmlspecialchars($article['title']); ?>"
+                             style="height: 200px; object-fit: cover;">
+                        <?php endif; ?>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title"><?php echo htmlspecialchars($article['title']); ?></h5>
+                            <p class="card-text text-muted">
+                                <?php
+                                $excerpt = mb_substr(strip_tags($article['content']), 0, 100, 'UTF-8');
+                                echo htmlspecialchars($excerpt) . '...';
+                                ?>
+                            </p>
+                            <div class="mt-auto">
+                                <a href="articles/article_details.php?id=<?php echo $article['id']; ?>" class="btn btn-primary">
+                                    ادامه مطلب
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            </div>
+            <div class="text-center mt-4">
+                <a href="articles/articles.php" class="btn btn-outline-primary">مشاهده همه مقالات</a>
             </div>
         </div>
     </section>
