@@ -40,3 +40,24 @@ CREATE TABLE IF NOT EXISTS articles (
     image_url VARCHAR(255),
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS doctor_profiles (
+    doctor_id INT PRIMARY KEY,
+    first_name VARCHAR(100),
+    last_name VARCHAR(100),
+    english_name VARCHAR(100),
+    email VARCHAR(255),
+    gender VARCHAR(20),
+    specialty VARCHAR(100),
+    FOREIGN KEY (doctor_id) REFERENCES users(id)
+);
+
+CREATE TABLE IF NOT EXISTS prescriptions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    doctor_id INT NOT NULL,
+    patient_id INT NOT NULL,
+    content TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (doctor_id) REFERENCES users(id),
+    FOREIGN KEY (patient_id) REFERENCES users(id)
+);

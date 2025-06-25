@@ -162,6 +162,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['error'] = 'خطا در ثبت یادداشت';
             }
             break;
+
+        case 'add_prescription':
+            $patient_id = filter_var($_POST['patient_id'], FILTER_SANITIZE_NUMBER_INT);
+            $content = filter_var($_POST['prescription'], FILTER_SANITIZE_STRING);
+
+            $is_assigned = get_row(
+                "SELECT 1 FROM doctor_patient WHERE doctor_id = ? AND patient_id = ?",
+                [$_SESSION['user_id'], $patient_id]
+            );
+
+            if (!$is_assigned) {
+                $_SESSION['error'] = 'دسترسی غیرمجاز';
+                header('Location: doctor.php');
+                exit;
+            }
+
+            $result = execute_query(
+                "INSERT INTO prescriptions (doctor_id, patient_id, content) VALUES (?, ?, ?)",
+                [$_SESSION['user_id'], $patient_id, $content]
+            );
+
+            if ($result) {
+                $_SESSION['success'] = 'نسخه با موفقیت ثبت شد';
+            } else {
+                $_SESSION['error'] = 'خطا در ثبت نسخه';
+            }
+            break;
     }
     
     header('Location: doctor.php');

@@ -21,6 +21,11 @@ $weekly_symptoms = get_rows(
     "SELECT * FROM symptoms WHERE user_id = ? AND recorded_at >= DATE_SUB(NOW(), INTERVAL 7 DAY) ORDER BY recorded_at",
     [$user_id]
 );
+
+$prescriptions = get_rows(
+    "SELECT p.*, u.name AS doctor_name FROM prescriptions p JOIN users u ON p.doctor_id = u.id WHERE patient_id = ? ORDER BY created_at DESC",
+    [$user_id]
+);
 ?>
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
@@ -214,6 +219,30 @@ document.addEventListener("DOMContentLoaded", function () {
                             </table>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Prescriptions -->
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-4">نسخه‌های پزشک</h5>
+                    <?php if (empty($prescriptions)): ?>
+                        <p class="text-muted">نسخه‌ای ثبت نشده است.</p>
+                    <?php else: ?>
+                        <ul class="list-group">
+                            <?php foreach ($prescriptions as $pr): ?>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span><?php echo htmlspecialchars($pr['content']); ?></span>
+                                    <small class="text-muted">
+                                        <?php echo date('Y/m/d', strtotime($pr['created_at'])); ?> -
+                                        <?php echo htmlspecialchars($pr['doctor_name']); ?>
+                                    </small>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
