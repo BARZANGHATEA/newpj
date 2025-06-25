@@ -1,6 +1,9 @@
 <?php
 require_once 'database.php';
 
+// Establish a single database connection for this script
+$db = get_db_connection();
+
 try {
     // Create users table with updated schema
     $db->exec("CREATE TABLE IF NOT EXISTS users (
