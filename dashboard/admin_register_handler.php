@@ -29,6 +29,7 @@ if (!$user) {
 if ($user && password_verify($password, $user['password'])) {
     $_SESSION['user_id'] = $user['id'];
     $_SESSION['role'] = $user['role'];
+    $_SESSION['name'] = $user['name'];
     header("Location: dashboard/admin.php");
     exit;
 } else {
