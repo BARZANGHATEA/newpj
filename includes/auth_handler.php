@@ -1,77 +1,105 @@
 <?php
-session_start();
-require_once(__DIR__ . '/database.php');
-?>
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-  <meta charset="UTF-8">
-  <title>ثبت‌نام کاربر</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css">
-  <style>
-    .register-box {
-      max-width: 700px;
-      margin: auto;
-      margin-top: 40px;
-      background-color: #ffffff;
-      border-radius: 10px;
-      padding: 30px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+// Authentication and authorization helper
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+require_once __DIR__ . '/database.php';
+
+/**
+ * Redirect to login page if the current user does not have the required role.
+ */
+function require_role(string $role): void
+{
+    if (!isset($_SESSION['user_id']) || ($_SESSION['role'] ?? '') !== $role) {
+        header('Location: ../login.php');
+        exit;
     }
-    .title-border {
-      border-bottom: 2px solid #0d6efd;
-      padding-bottom: 8px;
-      margin-bottom: 25px;
+}
+
+/**
+ * Handle user login. Assumes POST parameters 'phone' and 'password'.
+ */
+function handle_login(): void
+{
+    $phone = $_POST['phone'] ?? '';
+    $password = $_POST['password'] ?? '';
+
+    if (!$phone || !$password) {
+        header('Location: ../login.php?error=missing');
+        exit;
     }
-  </style>
-</head>
-<body class="bg-light">
-  <div class="container">
-    <div class="register-box">
-      <h4 class="title-border">فرم ثبت‌نام کاربر جدید</h4>
-      <form action="includes/auth_handler.php" method="POST" class="row g-3">
-        <input type="hidden" name="action" value="register">
-        <div class="col-md-6">
-          <label class="form-label">نام کامل</label>
-          <input type="text" name="name" class="form-control" required>
-        </div>
-        <div class="col-md-6">
-          <label class="form-label">شماره تلفن</label>
-          <input type="tel" name="phone" class="form-control" pattern="^09\d{9}$" required>
-        </div>
-        <div class="col-md-6">
-          <label class="form-label">کد ملی</label>
-          <input type="text" name="national_id" class="form-control" pattern="^\d{10}$" required>
-        </div>
-        <div class="col-md-3">
-          <label class="form-label">جنسیت</label>
-          <select name="gender" class="form-select" required>
-            <option value="">انتخاب کنید</option>
-            <option value="مرد">مرد</option>
-            <option value="زن">زن</option>
-          </select>
-        </div>
-        <div class="col-md-3">
-          <label class="form-label">سن</label>
-          <input type="number" name="age" min="1" max="120" class="form-control" required>
-        </div>
-        <div class="col-md-6">
-          <label class="form-label">رمز عبور</label>
-          <input type="password" name="password" class="form-control" required>
-        </div>
-        <div class="col-md-6">
-          <label class="form-label">نقش</label>
-          <select name="role" class="form-select" required>
-            <option value="">انتخاب کنید</option>
-            <option value="patient">بیمار</option>
-            <option value="doctor">پزشک</option>
-          </select>
-        </div>
-        <div class="col-12 text-end">
-          <button type="submit" class="btn btn-primary px-4">ثبت‌نام</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</body>
-</html>
+
+    $user = get_row('SELECT * FROM users WHERE phone = ?', [$phone]);
+    if ($user && password_verify($password, $user['password'])) {
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['role'] = $user['role'];
+        $_SESSION['name'] = $user['name'];
+        header('Location: ../dashboard/' . $user['role'] . '.php');
+        exit;
+    }
+
+    header('Location: ../login.php?error=invalid');
+    exit;
+}
+
+/**
+ * Handle user registration.
+ */
+function handle_register(): void
+{
+    $name = $_POST['name'] ?? '';
+    $phone = $_POST['phone'] ?? '';
+    $national_id = $_POST['national_id'] ?? '';
+    $password = $_POST['password'] ?? '';
+    $role = $_POST['role'] ?? '';
+    $medical_code = $_POST['medical_system_code'] ?? null;
+
+    if (!$name || !$phone || !$national_id || !$password || !$role) {
+        header('Location: ../login.php?error=missing');
+        exit;
+    }
+
+    if (get_row('SELECT id FROM users WHERE phone = ?', [$phone])) {
+        header('Location: ../login.php?error=phone_exists');
+        exit;
+    }
+
+    $status = $role === 'doctor' ? 'pending' : 'approved';
+    $hashed = password_hash($password, PASSWORD_DEFAULT);
+
+    execute_query(
+        'INSERT INTO users (name, phone, password, national_id, medical_system_code, role, status) VALUES (?, ?, ?, ?, ?, ?, ?)',
+        [$name, $phone, $hashed, $national_id, $medical_code, $role, $status]
+    );
+
+    $user = get_row('SELECT * FROM users WHERE phone = ?', [$phone]);
+    $_SESSION['user_id'] = $user['id'];
+    $_SESSION['role'] = $user['role'];
+    $_SESSION['name'] = $user['name'];
+
+    header('Location: ../dashboard/' . $user['role'] . '.php');
+    exit;
+}
+
+/**
+ * Log the current user out.
+ */
+function handle_logout(): void
+{
+    session_unset();
+    session_destroy();
+    header('Location: ../login.php');
+    exit;
+}
+
+// If the file is accessed directly via a POST/GET request, handle the action
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+    if ($_POST['action'] === 'login') {
+        handle_login();
+    } elseif ($_POST['action'] === 'register') {
+        handle_register();
+    }
+} elseif (isset($_GET['action']) && $_GET['action'] === 'logout') {
+    handle_logout();
+}
