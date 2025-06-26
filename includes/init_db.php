@@ -7,20 +7,20 @@ $db = get_db_connection();
 try {
     // Create users table with updated schema
     $db->exec("CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        id INT AUTO_INCREMENT PRIMARY KEY,
         name TEXT NOT NULL,
         phone VARCHAR(11) UNIQUE NOT NULL,
         password TEXT NOT NULL,
         national_id VARCHAR(10) NOT NULL,
         medical_system_code VARCHAR(20) NULL,
         role TEXT NOT NULL CHECK(role IN ('admin', 'doctor', 'patient')),
-        status TEXT NOT NULL DEFAULT 'pending' CHECK(status IN ('pending', 'approved', 'rejected')),
+        status VARCHAR(10) NOT NULL DEFAULT 'pending' CHECK(status IN ('pending', 'approved', 'rejected')),
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )");
 
     // Create symptoms table
     $db->exec("CREATE TABLE IF NOT EXISTS symptoms (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        id INT AUTO_INCREMENT PRIMARY KEY,
         user_id INTEGER NOT NULL,
         temperature FLOAT,
         blood_pressure VARCHAR(50),
@@ -33,7 +33,7 @@ try {
 
     // Create messages table
     $db->exec("CREATE TABLE IF NOT EXISTS messages (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        id INT AUTO_INCREMENT PRIMARY KEY,
         sender_id INTEGER NOT NULL,
         receiver_id INTEGER NOT NULL,
         content TEXT NOT NULL,
@@ -45,7 +45,7 @@ try {
 
     // Create articles table
     $db->exec("CREATE TABLE IF NOT EXISTS articles (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        id INT AUTO_INCREMENT PRIMARY KEY,
         title TEXT NOT NULL,
         content TEXT NOT NULL,
         image_url TEXT,
@@ -55,7 +55,7 @@ try {
 
     // Create doctor-patient relationship table
     $db->exec("CREATE TABLE IF NOT EXISTS doctor_patient (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        id INT AUTO_INCREMENT PRIMARY KEY,
         doctor_id INTEGER NOT NULL,
         patient_id INTEGER NOT NULL,
         assigned_at DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -66,7 +66,7 @@ try {
 
     // Create doctor notes table
     $db->exec("CREATE TABLE IF NOT EXISTS doctor_notes (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        id INT AUTO_INCREMENT PRIMARY KEY,
         doctor_id INTEGER NOT NULL,
         patient_id INTEGER NOT NULL,
         note TEXT NOT NULL,
@@ -88,7 +88,7 @@ try {
     )");
 
     $db->exec("CREATE TABLE IF NOT EXISTS prescriptions (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        id INT AUTO_INCREMENT PRIMARY KEY,
         doctor_id INTEGER NOT NULL,
         patient_id INTEGER NOT NULL,
         content TEXT NOT NULL,
@@ -99,12 +99,12 @@ try {
 
     // Table for doctor reviews submitted by patients
     $db->exec("CREATE TABLE IF NOT EXISTS doctor_reviews (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        id INT AUTO_INCREMENT PRIMARY KEY,
         doctor_id INTEGER NOT NULL,
         patient_id INTEGER NOT NULL,
         rating INTEGER NOT NULL CHECK(rating BETWEEN 1 AND 5),
         comment TEXT,
-        status TEXT NOT NULL DEFAULT 'pending' CHECK(status IN ('pending','approved')),
+        status VARCHAR(10) NOT NULL DEFAULT 'pending' CHECK(status IN ('pending','approved')),
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (doctor_id) REFERENCES users(id) ON DELETE CASCADE,
         FOREIGN KEY (patient_id) REFERENCES users(id) ON DELETE CASCADE
