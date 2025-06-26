@@ -7,7 +7,7 @@ require_role('patient');
 
 $doctor_id = filter_var($_POST['doctor_id'] ?? null, FILTER_SANITIZE_NUMBER_INT);
 $rating = filter_var($_POST['rating'] ?? null, FILTER_SANITIZE_NUMBER_INT);
-$comment = filter_var($_POST['comment'] ?? '', FILTER_SANITIZE_STRING);
+$comment = strip_tags(filter_var($_POST['comment'] ?? '', FILTER_UNSAFE_RAW));
 
 if (!$doctor_id || !$rating || $rating < 1 || $rating > 5) {
     header('Location: patient.php');
