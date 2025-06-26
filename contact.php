@@ -7,10 +7,14 @@ session_start();
     <meta charset="UTF-8">
     <title>تماس با ما</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body class="bg-light">
+<header class="contact-header text-center text-white mb-5">
+    <h1 class="display-5 fw-bold py-5">تماس با ما</h1>
+</header>
 <div class="container py-5">
-    <h1 class="mb-4 text-center">تماس با ما</h1>
     <?php if (isset($_GET['success'])): ?>
         <div class="alert alert-success text-center">پیام شما با موفقیت ارسال شد.</div>
     <?php elseif (isset($_GET['error'])): ?>
@@ -29,7 +33,8 @@ session_start();
             ?>
         </div>
     <?php endif; ?>
-    <form action="includes/contact_handler.php" method="post" class="mx-auto" style="max-width:600px;">
+    <div class="glass-card mx-auto p-4" style="max-width:600px;">
+    <form action="includes/contact_handler.php" method="post">
         <div class="mb-3">
             <label class="form-label">نام</label>
             <input type="text" name="name" class="form-control" required>
@@ -44,6 +49,7 @@ session_start();
         </div>
         <button type="submit" class="btn btn-primary w-100">ارسال</button>
     </form>
+    </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>

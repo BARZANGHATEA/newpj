@@ -24,14 +24,15 @@ body {
 
 /* Custom Button Styles */
 .btn-primary {
-    background: #0396FF;
+    background: #4b6cb7;
     border: none;
     padding: 10px 25px;
     border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 .btn-primary:hover {
-    background: #0384e5;
+    background: #182848;
 }
 
 /* Navigation */
@@ -143,3 +144,22 @@ body {
 .bg-blue { background-color: #87ceeb; }
 .bg-green { background-color: #90ee90; }
 .bg-yellow { background-color: #ffff99; }
+
+/* Contact Page Header */
+.contact-header {
+    background: url('https://images.unsplash.com/photo-1531746790731-6c087fecd65a?auto=format&fit=crop&w=1350&q=80') center/cover no-repeat;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Glassmorphism Card */
+.glass-card {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
