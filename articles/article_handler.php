@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         switch ($_POST['action']) {
             case 'create':
                 // Validate inputs
-                $title = filter_var($_POST['title'], FILTER_SANITIZE_STRING);
+                $title = strip_tags(filter_var($_POST['title'], FILTER_UNSAFE_RAW));
                 $content = $_POST['content']; // Allow HTML content from TinyMCE
                 
                 if (empty($title) || mb_strlen($title) < 5) {
@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             case 'edit':
                 // Validate inputs
                 $article_id = filter_var($_POST['article_id'], FILTER_SANITIZE_NUMBER_INT);
-                $title = filter_var($_POST['title'], FILTER_SANITIZE_STRING);
+                $title = strip_tags(filter_var($_POST['title'], FILTER_UNSAFE_RAW));
                 $content = $_POST['content']; // Allow HTML content from TinyMCE
                 
                 if (empty($title) || mb_strlen($title) < 5) {
