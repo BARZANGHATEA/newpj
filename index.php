@@ -16,6 +16,8 @@ $latest_articles = get_rows(
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="assets/css/main.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/all.min.css">
 </head>
 <body>
     <!-- Header Navigation -->
@@ -50,6 +52,7 @@ $latest_articles = get_rows(
     <!-- Hero Section -->
     <div class="hero-section text-center py-5">
         <div class="container">
+            <img src="https://source.unsplash.com/featured/800x400?health" class="img-fluid mb-4" alt="Health">
             <h1 class="display-4 mb-4">به سیستم مدیریت سلامت خوش آمدید</h1>
             <p class="lead mb-4">مراقبت سلامت هوشمند برای آینده‌ای سالم‌تر</p>
             <a href="login.php" class="btn btn-primary btn-lg">شروع کنید</a>
@@ -172,7 +175,7 @@ $latest_articles = get_rows(
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://kit.fontawesome.com/your-code.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/js/all.min.js" defer></script>
     <script src="assets/js/main.js"></script>
 </body>
 </html>
