@@ -49,6 +49,16 @@ php -S localhost:8000
 
 Navigate to <http://localhost:8000> in your browser to access the PHP pages such as `index.php`.
 
+## Font Awesome Assets
+
+A copy of Font Awesome is stored under `assets/fontawesome`. The directory holds the CSS and webfont files.
+
+To include these icons in a PHP page, add the following line within the `<head>` section:
+
+```html
+<link rel="stylesheet" href="/assets/fontawesome/css/all.min.css">
+```
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
