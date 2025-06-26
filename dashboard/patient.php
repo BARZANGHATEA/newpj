@@ -67,31 +67,36 @@ $assigned_doctor = get_row(
                 </ul>
                 <ul class="navbar-nav">
                     <li class="nav-item">
-<!-- دکمه باز کردن مودال -->
-<button class="btn btn-outline-primary btn-glass mb-3" data-bs-toggle="modal" data-bs-target="#avatarModal">
-  <i class="fas fa-camera"></i> تغییر تصویر پروفایل
-</button>
-
-<!-- مودال آپلود -->
-<div class="modal fade" id="avatarModal" tabindex="-1" aria-labelledby="avatarModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <form action="upload_avatar.php" method="POST" enctype="multipart/form-data">
-        <div class="modal-header">
-          <h5 class="modal-title" id="avatarModalLabel">آپلود تصویر جدید</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
-        </div>
-        <div class="modal-body text-center">
-          <img id="avatarPreview" src="<?= htmlspecialchars($patient_data['avatar'] ?? '../assets/images/default_avatar.png') ?>"
-               class="img-thumbnail rounded-circle mb-3" style="width: 120px; height: 120px;" alt="آواتار فعلی">
-          <input type="file" name="avatar" id="avatarInput" accept="image/*" class="form-control" required>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-success btn-glass">
-            <i class="fas fa-save"></i> ذخیره
-          </button>
-        </div>                    </li>
+                        <!-- دکمه باز کردن مودال -->
+                        <button class="btn btn-outline-primary btn-glass mb-3" data-bs-toggle="modal" data-bs-target="#avatarModal">
+                            <i class="fas fa-camera"></i> تغییر تصویر پروفایل
+                        </button>
+                    </li>
                 </ul>
+
+                <!-- مودال آپلود -->
+                <div class="modal fade" id="avatarModal" tabindex="-1" aria-labelledby="avatarModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <form action="upload_avatar.php" method="POST" enctype="multipart/form-data">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="avatarModalLabel">آپلود تصویر جدید</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
+                                </div>
+                                <div class="modal-body text-center">
+                                    <img id="avatarPreview" src="<?= htmlspecialchars($patient_data['avatar'] ?? '../assets/images/default_avatar.png') ?>"
+                                         class="img-thumbnail rounded-circle mb-3" style="width: 120px; height: 120px;" alt="آواتار فعلی">
+                                    <input type="file" name="avatar" id="avatarInput" accept="image/*" class="form-control" required>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-success btn-glass">
+                                        <i class="fas fa-save"></i> ذخیره
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
                 <ul class="navbar-nav me-2">
                     <li class="nav-item">
                         <button class="btn btn-outline-secondary btn-glass mb-3" data-bs-toggle="modal" data-bs-target="#doctorModal">
@@ -107,12 +112,6 @@ $assigned_doctor = get_row(
             </div>
         </div>
     </nav>
-</form>
-    
-    </form>
-</div>
-</div>
-</div>
 
 <!-- Modal for choosing doctor -->
 <div class="modal fade" id="doctorModal" tabindex="-1" aria-labelledby="doctorModalLabel" aria-hidden="true">
