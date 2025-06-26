@@ -59,6 +59,18 @@ To include these icons in a PHP page, add the following line within the `<head>`
 <link rel="stylesheet" href="/assets/fontawesome/css/all.min.css">
 ```
 
+## External Images
+
+The admin registration page loads an icon from the Bootstrap Icons repository:
+
+```
+https://raw.githubusercontent.com/twbs/icons/main/icons/person-gear.svg
+```
+
+If you prefer to keep assets locally, download the file from the link above and
+place it in your project (e.g. under `assets/images`). Then update the `<img>`
+tag in `dashboard/admin_register.php` to reference the local path.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
