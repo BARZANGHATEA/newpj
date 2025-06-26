@@ -61,3 +61,25 @@ CREATE TABLE IF NOT EXISTS prescriptions (
     FOREIGN KEY (doctor_id) REFERENCES users(id),
     FOREIGN KEY (patient_id) REFERENCES users(id)
 );
+
+CREATE TABLE IF NOT EXISTS doctor_patient (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    doctor_id INT NOT NULL,
+    patient_id INT NOT NULL,
+    assigned_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (doctor_id) REFERENCES users(id),
+    FOREIGN KEY (patient_id) REFERENCES users(id),
+    UNIQUE (doctor_id, patient_id)
+);
+
+CREATE TABLE IF NOT EXISTS doctor_reviews (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    doctor_id INT NOT NULL,
+    patient_id INT NOT NULL,
+    rating INT NOT NULL,
+    comment TEXT,
+    status ENUM('pending','approved') DEFAULT 'pending',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (doctor_id) REFERENCES users(id),
+    FOREIGN KEY (patient_id) REFERENCES users(id)
+);

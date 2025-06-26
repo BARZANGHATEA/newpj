@@ -7,6 +7,10 @@ require_role('doctor');
 $doctor_id = $_SESSION['user_id'];
 
 $profile = get_row("SELECT * FROM doctor_profiles WHERE doctor_id = ?", [$doctor_id]);
+$reviews = get_rows("SELECT r.rating, r.comment, u.name AS patient_name, r.created_at
+    FROM doctor_reviews r JOIN users u ON r.patient_id = u.id
+    WHERE r.doctor_id = ? AND r.status = 'approved'
+    ORDER BY r.created_at DESC", [$doctor_id]);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $first = $_POST['first_name'] ?? '';
@@ -235,6 +239,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </form>
         </div>
     </div>
+
+    <?php if ($reviews): ?>
+    <div class="card shadow-sm mt-4">
+        <div class="card-body">
+            <h5 class="card-title mb-3">نظرات بیماران</h5>
+            <ul class="list-group">
+                <?php foreach ($reviews as $rv): ?>
+                <li class="list-group-item">
+                    <strong><?= htmlspecialchars($rv['patient_name']) ?></strong>
+                    - <?= str_repeat('★', $rv['rating']) ?>
+                    <p class="mb-0 small mt-1"><?= htmlspecialchars($rv['comment']) ?></p>
+                </li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+    </div>
+    <?php endif; ?>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>

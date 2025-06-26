@@ -137,6 +137,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['error'] = 'خطا در پشتیبان‌گیری از پایگاه داده';
             }
             break;
+
+        case 'approve_review':
+            $review_id = filter_var($_POST['review_id'], FILTER_SANITIZE_NUMBER_INT);
+            execute_query("UPDATE doctor_reviews SET status='approved' WHERE id=?", [$review_id]);
+            $_SESSION['success'] = 'نظر تایید شد';
+            break;
+
+        case 'reject_review':
+            $review_id = filter_var($_POST['review_id'], FILTER_SANITIZE_NUMBER_INT);
+            execute_query("DELETE FROM doctor_reviews WHERE id=?", [$review_id]);
+            $_SESSION['success'] = 'نظر حذف شد';
+            break;
     }
     
     header('Location: admin.php');
