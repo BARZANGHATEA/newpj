@@ -1,7 +1,10 @@
 <?php
+require_once __DIR__ . '/config.php';
+
 function get_db_connection() {
     try {
-        $pdo = new PDO("mysql:host=localhost;dbname=health_project;charset=utf8", "root", "");
+        $dsn = sprintf('mysql:host=%s;dbname=%s;charset=utf8', DB_HOST, DB_NAME);
+        $pdo = new PDO($dsn, DB_USER, DB_PASS);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
         return $pdo;
