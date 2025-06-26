@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     switch ($_POST['action']) {
         case 'send_message':
             $patient_id = filter_var($_POST['patient_id'], FILTER_SANITIZE_NUMBER_INT);
-            $content = filter_var($_POST['content'], FILTER_SANITIZE_STRING);
+            $content = strip_tags(filter_var($_POST['content'], FILTER_UNSAFE_RAW));
             
             // Verify this patient is assigned to the current doctor
             $is_assigned = get_row(
@@ -107,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
         case 'update_patient_status':
             $patient_id = filter_var($_POST['patient_id'], FILTER_SANITIZE_NUMBER_INT);
-            $status = filter_var($_POST['status'], FILTER_SANITIZE_STRING);
+            $status = strip_tags(filter_var($_POST['status'], FILTER_UNSAFE_RAW));
             
             // Verify this patient is assigned to the current doctor
             $is_assigned = get_row(
@@ -136,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
         case 'add_note':
             $patient_id = filter_var($_POST['patient_id'], FILTER_SANITIZE_NUMBER_INT);
-            $note = filter_var($_POST['note'], FILTER_SANITIZE_STRING);
+            $note = strip_tags(filter_var($_POST['note'], FILTER_UNSAFE_RAW));
             
             // Verify this patient is assigned to the current doctor
             $is_assigned = get_row(
@@ -165,7 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         case 'add_prescription':
             $patient_id = filter_var($_POST['patient_id'], FILTER_SANITIZE_NUMBER_INT);
-            $content = filter_var($_POST['prescription'], FILTER_SANITIZE_STRING);
+            $content = strip_tags(filter_var($_POST['prescription'], FILTER_UNSAFE_RAW));
 
             $is_assigned = get_row(
                 "SELECT 1 FROM doctor_patient WHERE doctor_id = ? AND patient_id = ?",

@@ -89,8 +89,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
         case 'update_settings':
             // Example of updating system settings
-            $site_name = filter_var($_POST['site_name'], FILTER_SANITIZE_STRING);
-            $contact_phone = filter_var($_POST['contact_phone'], FILTER_SANITIZE_STRING);
+            $site_name = strip_tags(filter_var($_POST['site_name'], FILTER_UNSAFE_RAW));
+            $contact_phone = strip_tags(filter_var($_POST['contact_phone'], FILTER_UNSAFE_RAW));
             
             $updates = [
                 "UPDATE settings SET value = ? WHERE name = 'site_name'",

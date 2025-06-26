@@ -10,10 +10,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Sanitize and validate inputs
     $user_id = $_SESSION['user_id'];
     $temperature = filter_var($_POST['temperature'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-    $blood_pressure = filter_var($_POST['blood_pressure'], FILTER_SANITIZE_STRING);
-    $blood_sugar = filter_var($_POST['blood_sugar'], FILTER_SANITIZE_STRING);
-    $energy_level = filter_var($_POST['energy_level'], FILTER_SANITIZE_STRING);
-    $note = filter_var($_POST['note'], FILTER_SANITIZE_STRING);
+    $blood_pressure = strip_tags(filter_var($_POST['blood_pressure'], FILTER_UNSAFE_RAW));
+    $blood_sugar = strip_tags(filter_var($_POST['blood_sugar'], FILTER_UNSAFE_RAW));
+    $energy_level = strip_tags(filter_var($_POST['energy_level'], FILTER_UNSAFE_RAW));
+    $note = strip_tags(filter_var($_POST['note'], FILTER_UNSAFE_RAW));
 
     // Validate temperature
     if ($temperature < 35 || $temperature > 42) {
