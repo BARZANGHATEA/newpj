@@ -26,6 +26,17 @@ $prescriptions = get_rows(
     "SELECT p.*, u.name AS doctor_name FROM prescriptions p JOIN users u ON p.doctor_id = u.id WHERE patient_id = ? ORDER BY created_at DESC",
     [$user_id]
 );
+
+// List of approved doctors for selection
+$doctors = get_rows(
+    "SELECT u.id, u.name, u.avatar, dp.specialty FROM users u
+     LEFT JOIN doctor_profiles dp ON u.id = dp.doctor_id
+     WHERE u.role = 'doctor' AND u.status = 'approved'"
+);
+$assigned_doctor = get_row(
+    "SELECT doctor_id FROM doctor_patient WHERE patient_id = ?",
+    [$user_id]
+);
 ?>
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
@@ -81,6 +92,13 @@ $prescriptions = get_rows(
           </button>
         </div>                    </li>
                 </ul>
+                <ul class="navbar-nav me-2">
+                    <li class="nav-item">
+                        <button class="btn btn-outline-secondary btn-glass mb-3" data-bs-toggle="modal" data-bs-target="#doctorModal">
+                            <i class="fas fa-user-md"></i> انتخاب پزشک
+                        </button>
+                    </li>
+                </ul>
                 <ul class="navbar-nav">
                     <li class="nav-item">
                         <a href="../includes/auth_handler.php?action=logout" class="nav-link"><i class="fas fa-sign-out-alt"></i> خروج</a>
@@ -92,6 +110,33 @@ $prescriptions = get_rows(
 </form>
     
     </form>
+</div>
+</div>
+</div>
+
+<!-- Modal for choosing doctor -->
+<div class="modal fade" id="doctorModal" tabindex="-1" aria-labelledby="doctorModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="doctorModalLabel">انتخاب پزشک</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3">
+          <?php foreach ($doctors as $doc): ?>
+            <div class="col-md-4 text-center">
+              <form action="choose_doctor.php" method="POST">
+                <input type="hidden" name="doctor_id" value="<?= $doc['id'] ?>">
+                <img src="<?= htmlspecialchars($doc['avatar'] ?: '../assets/images/default_avatar.png') ?>" class="rounded-circle mb-2" style="width:80px;height:80px;object-fit:cover" alt="avatar">
+                <h6 class="mb-1"><?= htmlspecialchars($doc['name']) ?></h6>
+                <small class="text-muted d-block mb-2"><?= htmlspecialchars($doc['specialty'] ?? '') ?></small>
+                <button type="submit" class="btn btn-sm btn-primary">انتخاب</button>
+              </form>
+            </div>
+          <?php endforeach; ?>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -251,6 +296,34 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>
             </div>
         </div>
+
+        <!-- Doctor Review -->
+        <?php if ($assigned_doctor): ?>
+        <div class="col-12 mt-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-4">ثبت نظر برای پزشک</h5>
+                    <form action="submit_review.php" method="POST">
+                        <input type="hidden" name="doctor_id" value="<?= $assigned_doctor['doctor_id'] ?>">
+                        <div class="mb-3">
+                            <label class="form-label">امتیاز</label>
+                            <select name="rating" class="form-select" required>
+                                <option value="">انتخاب کنید</option>
+                                <?php for ($i=1;$i<=5;$i++): ?>
+                                    <option value="<?= $i ?>"><?= str_repeat('★',$i) ?></option>
+                                <?php endfor; ?>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">نظر شما</label>
+                            <textarea name="comment" class="form-control" rows="3" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success">ارسال</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

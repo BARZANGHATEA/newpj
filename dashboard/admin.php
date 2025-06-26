@@ -20,6 +20,18 @@ $articles = get_rows(
 $total_patients = get_row("SELECT COUNT(*) as count FROM users WHERE role = 'patient'")['count'];
 $total_doctors = get_row("SELECT COUNT(*) as count FROM users WHERE role = 'doctor' AND status = 'approved'")['count'];
 $total_articles = get_row("SELECT COUNT(*) as count FROM articles")['count'];
+
+// Lists for statistics popups
+$patients_list = get_rows("SELECT name FROM users WHERE role = 'patient'");
+$doctors_list = get_rows("SELECT name FROM users WHERE role = 'doctor' AND status = 'approved'");
+$articles_list = get_rows("SELECT title FROM articles");
+
+// Pending doctor reviews
+$pending_reviews = get_rows("SELECT dr.*, u.name AS doctor_name, p.name AS patient_name
+    FROM doctor_reviews dr
+    JOIN users u ON dr.doctor_id = u.id
+    JOIN users p ON dr.patient_id = p.id
+    WHERE dr.status = 'pending'");
 ?>
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
@@ -60,7 +72,7 @@ $total_articles = get_row("SELECT COUNT(*) as count FROM articles")['count'];
         <!-- Statistics Cards -->
         <div class="row mb-4">
             <div class="col-md-4">
-                <div class="card shadow-sm">
+                <div class="card shadow-sm" role="button" data-bs-toggle="modal" data-bs-target="#patientsModal">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div class="flex-shrink-0">
@@ -75,7 +87,7 @@ $total_articles = get_row("SELECT COUNT(*) as count FROM articles")['count'];
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card shadow-sm">
+                <div class="card shadow-sm" role="button" data-bs-toggle="modal" data-bs-target="#doctorsModal">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div class="flex-shrink-0">
@@ -90,7 +102,7 @@ $total_articles = get_row("SELECT COUNT(*) as count FROM articles")['count'];
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card shadow-sm">
+                <div class="card shadow-sm" role="button" data-bs-toggle="modal" data-bs-target="#articlesModal">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div class="flex-shrink-0">
@@ -104,6 +116,63 @@ $total_articles = get_row("SELECT COUNT(*) as count FROM articles")['count'];
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- Patients Modal -->
+        <div class="modal fade" id="patientsModal" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">لیست بیماران</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
+              </div>
+              <div class="modal-body">
+                <ul class="list-group">
+                  <?php foreach ($patients_list as $p): ?>
+                    <li class="list-group-item"><?= htmlspecialchars($p['name']) ?></li>
+                  <?php endforeach; ?>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Doctors Modal -->
+        <div class="modal fade" id="doctorsModal" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">لیست پزشکان</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
+              </div>
+              <div class="modal-body">
+                <ul class="list-group">
+                  <?php foreach ($doctors_list as $d): ?>
+                    <li class="list-group-item"><?= htmlspecialchars($d['name']) ?></li>
+                  <?php endforeach; ?>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Articles Modal -->
+        <div class="modal fade" id="articlesModal" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">لیست مقالات</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
+              </div>
+              <div class="modal-body">
+                <ul class="list-group">
+                  <?php foreach ($articles_list as $a): ?>
+                    <li class="list-group-item"><?= htmlspecialchars($a['title']) ?></li>
+                  <?php endforeach; ?>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Pending Doctors -->
@@ -228,6 +297,52 @@ $total_articles = get_row("SELECT COUNT(*) as count FROM articles")['count'];
                                                 onclick="return confirm('آیا از حذف این مقاله اطمینان دارید؟')">
                                             <i class="fas fa-trash"></i> حذف
                                         </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+                <?php endif; ?>
+            </div>
+        </div>
+
+        <!-- Pending Reviews -->
+        <div class="card shadow-sm mt-4">
+            <div class="card-body">
+                <h5 class="card-title mb-4">نظرات در انتظار تایید</h5>
+                <?php if (empty($pending_reviews)): ?>
+                    <p class="text-muted">نظری برای تایید وجود ندارد.</p>
+                <?php else: ?>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>پزشک</th>
+                                <th>بیمار</th>
+                                <th>امتیاز</th>
+                                <th>نظر</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($pending_reviews as $rv): ?>
+                            <tr>
+                                <td><?= htmlspecialchars($rv['doctor_name']) ?></td>
+                                <td><?= htmlspecialchars($rv['patient_name']) ?></td>
+                                <td><?= htmlspecialchars($rv['rating']) ?></td>
+                                <td><?= htmlspecialchars($rv['comment']) ?></td>
+                                <td>
+                                    <form action="admin_handler.php" method="POST" class="d-inline">
+                                        <input type="hidden" name="action" value="approve_review">
+                                        <input type="hidden" name="review_id" value="<?= $rv['id'] ?>">
+                                        <button type="submit" class="btn btn-sm btn-success">تایید</button>
+                                    </form>
+                                    <form action="admin_handler.php" method="POST" class="d-inline">
+                                        <input type="hidden" name="action" value="reject_review">
+                                        <input type="hidden" name="review_id" value="<?= $rv['id'] ?>">
+                                        <button type="submit" class="btn btn-sm btn-danger">حذف</button>
                                     </form>
                                 </td>
                             </tr>

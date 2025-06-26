@@ -97,6 +97,19 @@ try {
         FOREIGN KEY (patient_id) REFERENCES users(id) ON DELETE CASCADE
     )");
 
+    // Table for doctor reviews submitted by patients
+    $db->exec("CREATE TABLE IF NOT EXISTS doctor_reviews (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        doctor_id INTEGER NOT NULL,
+        patient_id INTEGER NOT NULL,
+        rating INTEGER NOT NULL CHECK(rating BETWEEN 1 AND 5),
+        comment TEXT,
+        status TEXT NOT NULL DEFAULT 'pending' CHECK(status IN ('pending','approved')),
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (doctor_id) REFERENCES users(id) ON DELETE CASCADE,
+        FOREIGN KEY (patient_id) REFERENCES users(id) ON DELETE CASCADE
+    )");
+
     // Insert admin user if not exists
     $admin = get_row("SELECT * FROM users WHERE role = 'admin'");
     if (!$admin) {
