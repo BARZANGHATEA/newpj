@@ -30,7 +30,7 @@ $latest_articles = get_rows(
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#about">درباره ما</a>
+                        <a class="nav-link" href="about.php">درباره ما</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#services">خدمات</a>
@@ -39,7 +39,7 @@ $latest_articles = get_rows(
                         <a class="nav-link" href="articles/articles.php">مقالات سلامت</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#contact">تماس با ما</a>
+                        <a class="nav-link" href="contact.php">تماس با ما</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="login.php">ورود</a>
@@ -58,6 +58,25 @@ $latest_articles = get_rows(
             <a href="login.php" class="btn btn-primary btn-lg">شروع کنید</a>
         </div>
     </div>
+
+    <!-- Additional Content Below Hero -->
+    <section class="py-5" id="intro-extra">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-md-4 mb-3">
+                    <img src="https://source.unsplash.com/featured/?medical" class="img-fluid rounded" alt="Medical">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <img src="https://source.unsplash.com/featured/?doctor" class="img-fluid rounded" alt="Doctor">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <img src="https://source.unsplash.com/featured/?hospital" class="img-fluid rounded" alt="Hospital">
+                </div>
+            </div>
+            <p class="text-center">تیم ما همواره تلاش می‌کند تا با ارائه ابزارهای نوین، تجربه‌ای امن و کارآمد برای مدیریت سلامت شما فراهم کند.</p>
+            <p class="text-center">با مرور مطالب و خدمات ما، می‌توانید آگاهی بیشتری نسبت به پیشگیری و درمان بیماری‌ها به دست آورید.</p>
+        </div>
+    </section>
 
     <!-- About Section -->
     <section id="about" class="py-5">
