@@ -32,6 +32,9 @@ foreach ($patients as $p) {
     <meta charset="UTF-8">
     <title>بیماران پزشک</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
     <style>
         .card {
             border: none;
@@ -65,9 +68,9 @@ foreach ($patients as $p) {
                     </li>
                 </ul>
                 <ul class="navbar-nav">
-                    <li class="nav-item"><a href="doctor_profile.php" class="nav-link">پروفایل</a></li>
-                    <li class="nav-item"><a href="doctor.php" class="nav-link">لیست بیماران</a></li>
-                    <li class="nav-item"><a href="../includes/auth_handler.php?action=logout" class="nav-link">خروج</a></li>
+                    <li class="nav-item"><a href="doctor_profile.php" class="nav-link"><i class="fas fa-user"></i> پروفایل</a></li>
+                    <li class="nav-item"><a href="doctor.php" class="nav-link"><i class="fas fa-users"></i> لیست بیماران</a></li>
+                    <li class="nav-item"><a href="../includes/auth_handler.php?action=logout" class="nav-link"><i class="fas fa-sign-out-alt"></i> خروج</a></li>
                 </ul>
             </div>
         </div>
@@ -82,7 +85,9 @@ foreach ($patients as $p) {
                         <img src="<?= htmlspecialchars($avatar) ?>" class="avatar mx-auto" alt="آواتار">
                         <h5 class="card-title"><?= htmlspecialchars($p['name']) ?></h5>
                         <p class="text-muted small"><?= htmlspecialchars($p['national_id']) ?></p>
-                        <button class="btn btn-outline-primary btn-sm mt-2" data-bs-toggle="modal" data-bs-target="#modal<?= $p['id'] ?>">مشاهده علائم</button>
+                        <button class="btn btn-outline-primary btn-sm btn-glass mt-2" data-bs-toggle="modal" data-bs-target="#modal<?= $p['id'] ?>">
+                            <i class="fas fa-eye"></i> مشاهده علائم
+                        </button>
                     </div>
                 </div>
 
@@ -132,7 +137,9 @@ foreach ($patients as $p) {
                                 <label class="form-label">نسخه</label>
                                 <textarea name="prescription" class="form-control" required></textarea>
                             </div>
-                            <button type="submit" class="btn btn-success">ثبت نسخه</button>
+                            <button type="submit" class="btn btn-success btn-glass">
+                                <i class="fas fa-prescription"></i> ثبت نسخه
+                            </button>
                         </form>
                       </div>
                     </div>
