@@ -35,6 +35,7 @@ $prescriptions = get_rows(
     <title>داشبورد بیمار - سیستم مدیریت سلامت</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css">
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/main.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -56,8 +57,8 @@ $prescriptions = get_rows(
                 <ul class="navbar-nav">
                     <li class="nav-item">
 <!-- دکمه باز کردن مودال -->
-<button class="btn btn-outline-primary mb-3" data-bs-toggle="modal" data-bs-target="#avatarModal">
-  تغییر تصویر پروفایل
+<button class="btn btn-outline-primary btn-glass mb-3" data-bs-toggle="modal" data-bs-target="#avatarModal">
+  <i class="fas fa-camera"></i> تغییر تصویر پروفایل
 </button>
 
 <!-- مودال آپلود -->
@@ -75,12 +76,14 @@ $prescriptions = get_rows(
           <input type="file" name="avatar" id="avatarInput" accept="image/*" class="form-control" required>
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-success">ذخیره</button>
+          <button type="submit" class="btn btn-success btn-glass">
+            <i class="fas fa-save"></i> ذخیره
+          </button>
         </div>                    </li>
                 </ul>
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a href="../includes/auth_handler.php?action=logout" class="nav-link">خروج</a>
+                        <a href="../includes/auth_handler.php?action=logout" class="nav-link"><i class="fas fa-sign-out-alt"></i> خروج</a>
                     </li>
                 </ul>
             </div>
@@ -148,7 +151,9 @@ document.addEventListener("DOMContentLoaded", function () {
                                 <textarea class="form-control" id="note" name="note" rows="3"></textarea>
                             </div>
                             
-                            <button type="submit" class="btn btn-primary">ثبت اطلاعات</button>
+                            <button type="submit" class="btn btn-primary btn-glass">
+                                <i class="fas fa-check-circle"></i> ثبت اطلاعات
+                            </button>
                         </form>
                     </div>
                 </div>

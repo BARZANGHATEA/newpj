@@ -137,14 +137,17 @@ $total_articles = get_row("SELECT COUNT(*) as count FROM articles")['count'];
                                     <form action="admin_handler.php" method="POST" class="d-inline">
                                         <input type="hidden" name="action" value="approve_doctor">
                                         <input type="hidden" name="doctor_id" value="<?php echo $doctor['id']; ?>">
-                                        <button type="submit" class="btn btn-sm btn-success">تایید</button>
+                                        <button type="submit" class="btn btn-sm btn-success btn-glass">
+                                            <i class="fas fa-check"></i>
+                                            تایید
+                                        </button>
                                     </form>
                                     <form action="admin_handler.php" method="POST" class="d-inline">
                                         <input type="hidden" name="action" value="reject_doctor">
                                         <input type="hidden" name="doctor_id" value="<?php echo $doctor['id']; ?>">
-                                        <button type="submit" class="btn btn-sm btn-danger" 
+                                        <button type="submit" class="btn btn-sm btn-danger btn-glass"
                                                 onclick="return confirm('آیا از رد این درخواست اطمینان دارید؟')">
-                                            رد
+                                            <i class="fas fa-times"></i> رد
                                         </button>
                                     </form>
                                 </td>
@@ -180,7 +183,9 @@ $total_articles = get_row("SELECT COUNT(*) as count FROM articles")['count'];
     </select>
   </div>
   <div class="col-md-2 d-flex align-items-end">
-    <button type="submit" class="btn btn-success w-100">اختصاص</button>
+    <button type="submit" class="btn btn-success btn-glass w-100">
+        <i class="fas fa-user-plus"></i> اختصاص
+    </button>
   </div>
 </form>
 
@@ -189,7 +194,7 @@ $total_articles = get_row("SELECT COUNT(*) as count FROM articles")['count'];
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h5 class="card-title mb-0">مدیریت مقالات</h5>
-                    <a href="../articles/article_create.php" class="btn btn-primary">
+                    <a href="../articles/article_create.php" class="btn btn-primary btn-glass">
                         <i class="fas fa-plus"></i> مقاله جدید
                     </a>
                 </div>
@@ -212,14 +217,14 @@ $total_articles = get_row("SELECT COUNT(*) as count FROM articles")['count'];
                                 <td><?php echo htmlspecialchars($article['title']); ?></td>
                                 <td><?php echo date('Y/m/d H:i', strtotime($article['created_at'])); ?></td>
                                 <td>
-                                    <a href="../articles/article_edit.php?id=<?php echo $article['id']; ?>" 
-                                       class="btn btn-sm btn-info">
+                                    <a href="../articles/article_edit.php?id=<?php echo $article['id']; ?>"
+                                       class="btn btn-sm btn-info btn-glass">
                                         <i class="fas fa-edit"></i> ویرایش
                                     </a>
                                     <form action="admin_handler.php" method="POST" class="d-inline">
                                         <input type="hidden" name="action" value="delete_article">
                                         <input type="hidden" name="article_id" value="<?php echo $article['id']; ?>">
-                                        <button type="submit" class="btn btn-sm btn-danger" 
+                                        <button type="submit" class="btn btn-sm btn-danger btn-glass"
                                                 onclick="return confirm('آیا از حذف این مقاله اطمینان دارید؟')">
                                             <i class="fas fa-trash"></i> حذف
                                         </button>
